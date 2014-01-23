@@ -1,0 +1,64 @@
+{
+  "name": "Cessna Skyhawk",
+  "code": "C172M",
+  "categories": {
+    "normal": [
+      {"x": 83, "y": 1200},
+      {"x": 83, "y": 1950},
+      {"x": 87, "y": 2325},
+      {"x": 93, "y": 2325},
+      {"x": 93, "y": 1200}
+    ],
+    "utility": [
+      {"x": 83, "y": 1200},
+      {"x": 83, "y": 1950},
+      {"x": 86.5, "y": 1950},
+      {"x": 86.5, "y": 1200}
+    ],
+    "acrobatic": null
+  },
+  "sections": {
+    "empty": {
+      "name": "Licensed Empty Weight",
+      "weight": 1438.11,
+      "arm": 87.545459,
+      "moment": 1259000,
+      "max": 2325
+    },
+    "oil": {
+      "name": "Oil",
+      "volume": 7,
+      "arm": 27.5,
+      "moment": null,
+      "max": 8
+    },
+    "fuel": {
+      "name": "Fuel",
+      "volume": 30,
+      "arm": 95,
+      "moment": null,
+      "max": 48
+    },
+    "front": {
+      "name": "Front Passengers",
+      "weight": 260,
+      "arm": 80.5,
+      "moment": null,
+      "max": null
+    },
+    "aft": {
+      "name": "Aft Passengers",
+      "weight": 300,
+      "arm": 118.1,
+      "moment": null,
+      "max": null
+    },
+    "baggage": {
+      "name": "Baggage Compartment",
+      "weight": 0,
+      "arm": 142.8,
+      "moment": null,
+      "max": null
+    }
+  }
+}
