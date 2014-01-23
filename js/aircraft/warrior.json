@@ -1,0 +1,20 @@
+define([], function () {
+  var Warrior = {
+    categories: {
+      normal: {
+        {x: 83, y: 1200},
+        {x: 83, y: 1950},
+        {x: 87, y: 2325},
+        {x: 93, y: 2325},
+        {x: 93, y: 1200}
+      },
+      utility: {
+        {x: 83, y: 1200},
+        {x: 83, y: 1950},
+        {x: 86.5, y: 1950},
+        {x: 86.5, y: 1200},
+      },
+      acrobatic: null
+    }
+  }
+});
