@@ -14,7 +14,7 @@ require.config({
   }
 });
 
-require(['d3', 'nv', 'aircraft/Aircraft', 'json!aircraft/warrior'], function (d3, nv, Aircraft, warrior) {
+require(['d3', 'nv', 'aircraft/Aircraft', 'json!aircraft/warrior.json'], function (d3, nv, Aircraft, warrior) {
   var chart;
 
   var N44749 = new Aircraft(warrior);

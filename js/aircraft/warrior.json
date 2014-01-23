@@ -37,7 +37,7 @@
       "volume": 30,
       "arm": 95,
       "moment": null,
-      "max": 48 // gallons
+      "max": 48
     },
     "front": {
       "name": "Front Passengers",
