@@ -2,6 +2,8 @@ require.config({
   paths: {
     d3: 'vendor/nvd3/lib/d3.v2',
     nv : 'vendor/nvd3/nv.d3',
+    text: 'vendor/require/text',
+    json: 'vendor/require/json'
   },
   shim: {
     d3: { exports: 'd3' },
@@ -12,8 +14,10 @@ require.config({
   }
 });
 
-require(['d3', 'nv', 'aircraft/warrior'], function (d3, nv, Warrior) {
+require(['d3', 'nv', 'aircraft/Aircraft', 'json!aircraft/warrior'], function (d3, nv, Aircraft, warrior) {
   var chart;
+
+  var N44749 = new Aircraft(warrior);
 
   function setNewValue() {
     var newSection = N44749.sections[this.name];
@@ -70,8 +74,6 @@ require(['d3', 'nv', 'aircraft/warrior'], function (d3, nv, Warrior) {
     });
   }
 
-  var N44749 = new Warrior();
-
   d3.select('title').text(N44749.name + ': Weight and Balance');
   d3.select('#aircraft').text(N44749.name + ' ' + N44749.code);
   // create the form
@@ -99,9 +101,6 @@ require(['d3', 'nv', 'aircraft/warrior'], function (d3, nv, Warrior) {
     }
   }
 
-
-
-
   function data() {
     return [
       {
@@ -123,28 +122,4 @@ require(['d3', 'nv', 'aircraft/warrior'], function (d3, nv, Warrior) {
   }
 
   redraw();
-
-  /*
-  function data() {
-    var sin = [],
-        cos = [];
-
-    for (var i = 0; i < 100; i++) {
-      sin.push({x: i, y: Math.sin(i/10)});
-      cos.push({x: i, y: 0.5 * Math.cos(i/10)});
-    }
-
-    return [
-      {
-        values: sin,
-        key: 'Sine Wave',
-        color: '#ff7f0e'
-      },
-      {
-        values: cos,
-        key: 'Cosine Wave',
-        color: '#2ca02c'
-      }
-    ];
-  }*/
 });
