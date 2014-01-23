@@ -1,0 +1,15 @@
+{
+  "name": "wab",
+  "description": "A Javascript-based weight and balance calculator for general aviation aircraft.",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "express": "3.x"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-express-server": "~0.4.11",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-contrib-jshint": "~0.8.0"
+  }
+}
