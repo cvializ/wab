@@ -20,25 +20,95 @@ function (d3, nv, Aircraft, list) {
     return 'json!aircraft/' + d + '.json';
   }
   list = list.map(pluginify);
+
+  //=========================================================
   require(list, function () {
-    var aircraft = Array.prototype.slice.call(arguments);
-    var chart;
+    var aircraftList = Array.prototype.slice.call(arguments);
 
-    var N44749 = new Aircraft(aircraft[0]);
+    function init() {
+      var picker = d3.select('#aircraftPicker');
+      picker.selectAll('.opt')
+        .data(aircraftList)
+        .enter()
+          .append('option')
+          .classed('opt', true)
+          .attr('value', function (aircraft) { return aircraftList.indexOf(aircraft); })
+          .text(function (aircraft) {
+            return aircraft.code;
+          });
+      picker.on('change', function () {
+        update(aircraftList[this.value]);
+      });
 
-    function setNewValue() {
-      var newSection = N44749.sections[this.name];
-      if (newSection.weight !== undefined) {
-        newSection.weight = +this.value;
-      } else {
-        newSection.volume = +this.value;
-      }
-      redraw();
+      var inputTable = d3.select('#wabform').append('table');
+      inputTable.append('thead')
+        .append('tr')
+          .data(['Section', 'Weight or Volume', 'Arm'])
+          .append('th')
+            .text(function (d) { return d; });
+      inputTable.append('tbody');
     }
 
-    function redraw() {
+    function update(aircraft) {
+      aircraft = new Aircraft(aircraft);
+
+      // Set the titles
+      d3.select('title').text(aircraft.name + ': Weight and Balance');
+      d3.select('#aircraft').text(aircraft.name + ' ' + aircraft.code);
+
+      var inputTable = d3.select('#wabform tbody');
+
+      // Select the table and apply the data.
+      var rowData = inputTable.selectAll('.sectionRow').data(aircraft.sections);
+
+      // Create the new elements for the enter selection
+      var newRow = rowData.enter()
+        .append('tr')
+        .classed('sectionRow', true);
+      newRow.append('td').classed('title', true);
+      newRow.append('td').classed('weightvolume', true)
+        .append('input')
+        .attr('type', 'text');
+      newRow.append('td').classed('arm', true);
+
+      // Update the values for new and existing elements
+      rowData.select('td.title')
+        .text(function (section) { return section.title; });
+      rowData.select('td.weightvolume')
+        .select('input') // TODO: I think this will work
+          .attr('name', function (section) {
+            return section.name;
+          })
+          .attr('value', function (section) {
+            return section.weight || section.volume;
+          })
+          .on('change', function (section) {
+            // i hope this is a reference to the actual object
+            var newSection = aircraft.sections.filter(function (d) {
+              return d.name == section.name;
+            }).pop();
+
+            if (newSection.weight !== undefined) {
+              newSection.weight = +this.value;
+            } else {
+              newSection.volume = +this.value;
+            }
+            redrawChart(aircraft);
+          });
+      rowData.select('td.arm')
+        .text(function (section) {
+          return section.arm;
+        });
+
+      // Remove the old elements
+      rowData.exit().remove();
+
+      redrawChart(aircraft);
+    }
+
+    function redrawChart(aircraft) {
       nv.addGraph(function() {
-        chart = nv.models.lineChart();
+        var chart = nv.models.lineChart();
 
         chart.tooltipContent(function(key, x, y, e, graph) {
           x = (+x).toFixed(2);
@@ -53,10 +123,10 @@ function (d3, nv, Aircraft, list) {
           }
         });
 
-        var xExtent = d3.extent(N44749.categories.normal, function (d) {
+        var xExtent = d3.extent(aircraft.categories.normal, function (d) {
           return d.x;
         }),
-            yExtent = d3.extent(N44749.categories.normal, function (d) {
+            yExtent = d3.extent(aircraft.categories.normal, function (d) {
           return d.y;
         });
 
@@ -67,11 +137,11 @@ function (d3, nv, Aircraft, list) {
 
         chart.yAxis
             .axisLabel('Weight (lbs)')
-            .tickValues(d3.range(yExtent[0], yExtent[1], 200))
+            //.tickValues(d3.range(yExtent[0], yExtent[1], 200))
             .tickFormat(d3.format('.02f'));
 
         d3.select('#chart svg')
-            .datum(data())
+            .datum(data(aircraft))
           .transition().duration(500)
             .call(chart);
 
@@ -81,6 +151,10 @@ function (d3, nv, Aircraft, list) {
       });
     }
 
+    var N44749 = new Aircraft(aircraftList[0]);
+    init();
+    update(N44749);
+/*
     d3.select('title').text(N44749.name + ': Weight and Balance');
     d3.select('#aircraft').text(N44749.name + ' ' + N44749.code);
     // create the form
@@ -107,27 +181,25 @@ function (d3, nv, Aircraft, list) {
           .text(section.arm);
       }
     }
-
-    function data() {
+*/
+    function data(aircraft) {
       return [
         {
-          values: N44749.categories.normal,
+          values: aircraft.categories.normal,
           key: 'Normal Category',
           color: '#ff7f0e'
         },
         {
-          values: N44749.categories.utility,
+          values: aircraft.categories.utility,
           key: 'Utility Category',
           color: '#2ca02c'
         },
         {
-          values: N44749.WeightAndBalance(),
+          values: aircraft.WeightAndBalance(),
           key: 'Weight and Balance',
           color: 'red'
         }
       ];
     }
-
-    redraw();
   });
 });

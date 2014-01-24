@@ -31,27 +31,25 @@ define([], function () {
         iWeight,
         weight_so_far = 0;
         moment_so_far = 0;
-    for (var key in this.sections) {
-      if (this.sections.hasOwnProperty(key)) {
-        section = this.sections[key];
+    for (var i in this.sections) {
+      section = this.sections[i];
 
-        if (key === 'fuel' || key === 'oil') {
-          iWeight = section.volume * this.constants.weight[key];
-        } else {
-          iWeight = section.weight;
-        }
-
-        if (section.weight === 0) continue;
-
-        weight_so_far += iWeight;
-        moment_so_far += iWeight * section.arm;
-
-        points.push({
-          x: moment_so_far / weight_so_far,
-          y: weight_so_far,
-          label: section.name
-        });
+      if (section.name === 'fuel' || section.name === 'oil') {
+        iWeight = section.volume * this.constants.weight[section.name];
+      } else {
+        iWeight = section.weight;
       }
+
+      if (section.weight === 0) continue;
+
+      weight_so_far += iWeight;
+      moment_so_far += iWeight * section.arm;
+
+      points.push({
+        x: moment_so_far / weight_so_far,
+        y: weight_so_far,
+        label: section.name
+      });
     }
 
     return points;
