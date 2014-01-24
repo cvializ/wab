@@ -42,8 +42,9 @@ function (d3, nv, Aircraft, list) {
 
       var inputTable = d3.select('#wabform').append('table');
       inputTable.append('thead')
-        .append('tr')
+        .append('tr').selectAll('th')
           .data(['Section', 'Weight or Volume', 'Arm'])
+          .enter()
           .append('th')
             .text(function (d) { return d; });
       inputTable.append('tbody');

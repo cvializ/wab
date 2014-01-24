@@ -48,7 +48,7 @@ define([], function () {
       points.push({
         x: moment_so_far / weight_so_far,
         y: weight_so_far,
-        label: section.name
+        label: section.title
       });
     }
 
