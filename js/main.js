@@ -36,6 +36,7 @@ function (d3, nv, Aircraft, list) {
           .text(function (aircraft) {
             return aircraft.code;
           });
+
       picker.on('change', function () {
         update(aircraftList[this.value]);
       });
@@ -80,7 +81,7 @@ function (d3, nv, Aircraft, list) {
           .attr('name', function (section) {
             return section.name;
           })
-          .attr('value', function (section) {
+          .property('value', function (section) {
             return section.weight || section.volume;
           })
           .on('change', function (section) {
@@ -94,6 +95,7 @@ function (d3, nv, Aircraft, list) {
             } else {
               newSection.volume = +this.value;
             }
+
             redrawChart(aircraft);
           });
       rowData.select('td.arm')
@@ -155,34 +157,7 @@ function (d3, nv, Aircraft, list) {
     var N44749 = new Aircraft(aircraftList[0]);
     init();
     update(N44749);
-/*
-    d3.select('title').text(N44749.name + ': Weight and Balance');
-    d3.select('#aircraft').text(N44749.name + ' ' + N44749.code);
-    // create the form
-    var wabform = d3.select('#wabform').append('table');
-    var header = wabform.append('tr');
-    header.append('th').text('Section');
-    header.append('th').text('Weight or Volume');
-    header.append('th').text('Arm');
-    var sections = N44749.sections;
-    var section;
-    for (var key in sections) {
-      if (sections.hasOwnProperty(key)) {
-        section = sections[key];
-        var row = wabform.append('tr');
-        row.append('td')
-          .text(section.name);
-        row.append('td')
-          .append('input')
-            .attr('type', 'text')
-            .attr('name', key)
-            .attr('value', section.weight || section.volume)
-            .on('blur', setNewValue);
-        row.append('td')
-          .text(section.arm);
-      }
-    }
-*/
+
     function data(aircraft) {
       return [
         {
