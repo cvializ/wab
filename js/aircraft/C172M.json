@@ -60,7 +60,7 @@
       "name": "aft",
       "title": "Rear Passengers",
       "unit": "lbs",
-      "quantity": 340,
+      "quantity": null,
       "arm": 73,
       "moment": null,
       "max": 400
@@ -69,7 +69,7 @@
       "name": "baggage",
       "title": "Baggage Area",
       "unit": "lbs",
-      "quantity": 0,
+      "quantity": null,
       "arm": 95,
       "moment": null,
       "max": 120

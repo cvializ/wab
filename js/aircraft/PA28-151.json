@@ -69,7 +69,7 @@
       "name": "baggage",
       "title": "Baggage Compartment",
       "unit": "lbs",
-      "quantity": 0,
+      "quantity": null,
       "arm": 142.8,
       "moment": null,
       "max": 200

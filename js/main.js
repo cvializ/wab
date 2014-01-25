@@ -85,7 +85,7 @@ function (bootstrap, d3, nv, Aircraft, list) {
               return section.name;
             })
             .property('value', function (section) {
-              return section.quantity;
+              return section.quantity === null ? "" : section.quantity;
             })
             .on('change', function (section) {
               // i hope this is a reference to the actual object
