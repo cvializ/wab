@@ -89,9 +89,17 @@ function (bootstrap, d3, nv, Aircraft, ich, template, list) {
       rowData.select('.wabtitle')
         .text(function (section) { return section.title; });
 
+      function sectionHasError(section) {
+        if (section.quantity > section.max) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+
       // Update the input attributes and callback
       rowData.select('.wabquantity').select('.input-group')
-          .classed('has-error', false)
+          .classed('has-error', sectionHasError)
           .select('input')
             .attr('name', function (section) {
               return section.name;
@@ -109,13 +117,7 @@ function (bootstrap, d3, nv, Aircraft, ich, template, list) {
               newSection.quantity = +this.value;
 
               d3.selectAll('.wabquantity .input-group')
-                .classed('has-error', function (d) {
-                  if (d.quantity > d.max) {
-                    return true;
-                  } else {
-                    return false;
-                  }
-                });
+                .classed('has-error', sectionHasError);
 
               redrawChart(aircraft);
             });
