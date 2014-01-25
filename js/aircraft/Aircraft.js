@@ -14,22 +14,35 @@ define([], function () {
     };
   };
 
-  Aircraft.prototype.MaxGrossWeight = function () {
-    var mgw = 0;
-    this.categories.normal.forEach(function (d, i) {
-      if (d.y > mgw) {
-        mgw = d.y;
-      }
-    });
+  function getLimit(comparator, values, map) {
+    if (map !== 'undefined') {
+      values = values.map(map);
+    }
+    return comparator.apply(null, values);
+  }
 
-    return mgw;
+  Aircraft.prototype.MaxGrossWeight = function () {
+    return getLimit(Math.max, this.categories.normal, function (d) { return d.y; });
+  };
+
+  Aircraft.prototype.MinGrossWeight = function () {
+    return getLimit(Math.min, this.categories.normal, function (d) { return d.y; });
+  };
+
+  Aircraft.prototype.AftCGLimit = function () {
+    return getLimit(Math.max, this.categories.normal, function (d) { return d.x; });
+  };
+
+  Aircraft.prototype.ForwardCGLimit = function () {
+    return getLimit(Math.min, this.categories.normal, function (d) { return d.x; });
   };
 
   Aircraft.prototype.WeightAndBalance = function () {
     var points = [],
         section,
         iWeight,
-        weight_so_far = 0;
+        iArm,
+        weight_so_far = 0,
         moment_so_far = 0;
     for (var i in this.sections) {
       section = this.sections[i];
@@ -42,8 +55,16 @@ define([], function () {
 
       if (section.quantity === 0) continue;
 
+      if (typeof section.arm === 'number') {
+        iArm = section.arm;
+      } else if (section.arm !== null) {
+        iArm = section.arm.value;
+      } else {
+        iArm = 0; // TODO: Useful value?
+      }
+
       weight_so_far += iWeight;
-      moment_so_far += iWeight * section.arm;
+      moment_so_far += iWeight * iArm;
 
       points.push({
         x: moment_so_far / weight_so_far,
@@ -52,7 +73,17 @@ define([], function () {
       });
     }
 
-    return points;
+    var loading = points[points.length-1];
+
+    var success = loading.y < this.MaxGrossWeight() &&
+                  loading.y > this.MinGrossWeight() &&
+                  loading.x > this.ForwardCGLimit() &&
+                  loading.x < this.AftCGLimit();
+
+    return {
+      success: success,
+      points: points
+    };
   };
 
   return Aircraft;

@@ -44,9 +44,8 @@ function (bootstrap, d3, nv, Aircraft, ich, template, list) {
   require(list, function () {
     var aircraftList = Array.prototype.slice.call(arguments);
 
-    var N44749 = new Aircraft(aircraftList[0]);
     init();
-    update(N44749);
+    update(aircraftList[0]);
 
     function init() {
       var picker = d3.select('#aircraftPicker');
@@ -72,10 +71,8 @@ function (bootstrap, d3, nv, Aircraft, ich, template, list) {
       d3.select('title').text(aircraft.name + ': Weight and Balance');
       d3.select('#aircraft').text(aircraft.name + ' ' + aircraft.code);
 
-      var inputTable = d3.select('#form');
-
       // DATA: Select the table and apply the data.
-      var rowData = inputTable.selectAll('.wabSection').data(aircraft.sections);
+      var rowData = d3.select('#form').selectAll('.wabSection').data(aircraft.sections);
 
       // ENTER:
       // Create the new elements for the enter selection
@@ -89,6 +86,8 @@ function (bootstrap, d3, nv, Aircraft, ich, template, list) {
       rowData.select('.wabtitle')
         .text(function (section) { return section.title; });
 
+      // Detect whether the new value exceeds the
+      // maximum.
       function sectionHasError(section) {
         if (section.quantity > section.max) {
           return true;
@@ -111,11 +110,13 @@ function (bootstrap, d3, nv, Aircraft, ich, template, list) {
               return section.quantity === null ? "" : section.quantity;
             })
             .on('change', function (section) {
+              // Update the value on the aircraft model
               var newSection = aircraft.sections.filter(function (d) {
                 return d.name == section.name;
               }).pop();
               newSection.quantity = +this.value;
 
+              // Update the has-error class
               d3.selectAll('.wabquantity .input-group')
                 .classed('has-error', sectionHasError);
 
@@ -124,8 +125,38 @@ function (bootstrap, d3, nv, Aircraft, ich, template, list) {
 
       // Update the arm text.
       rowData.select('.wabarm')
-        .text(function (section) {
-          return section.arm;
+        .select('input')
+        .attr('disabled', function (section) {
+          if (typeof section.arm === 'number') {
+            return 'disabled';
+          } else if (section.arm !== null) {
+            if (section.arm.configurable) {
+              return null;
+            } else {
+              return 'disabled';
+            }
+          }
+          return null;
+        })
+        .property('value', function (section) {
+          if (typeof section.arm === 'number') {
+            return section.arm;
+          } else if (section.arm !== null) {
+            return section.arm.value;
+          }
+          return null;
+        })
+        .on('change', function (section) {
+          // Update the value on the aircraft model.
+          var newSection = aircraft.sections.filter(function (d) {
+            return d.name == section.name;
+          }).pop();
+
+          // Don't check for null, since this function
+          // is only called for sections with an arm
+          // object.
+          newSection.arm.value = +this.value;
+          redrawChart(aircraft);
         });
 
       // EXIT: remoe the old elements
@@ -174,7 +205,7 @@ function (bootstrap, d3, nv, Aircraft, ich, template, list) {
 
     function data(aircraft) {
       var wab = aircraft.WeightAndBalance(),
-          color = wab[wab.length-1].y > aircraft.MaxGrossWeight() ? 'red' : 'green';
+          color = wab.success ? 'green' : 'red';
       return [
         {
           values: aircraft.categories.normal,
@@ -187,7 +218,7 @@ function (bootstrap, d3, nv, Aircraft, ich, template, list) {
           color: 'lightblue'
         },
         {
-          values: wab,
+          values: wab.points,
           key: 'Weight and Balance',
           color: color
         }

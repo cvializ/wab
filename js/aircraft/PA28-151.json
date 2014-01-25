@@ -25,7 +25,10 @@
       "title": "Licensed Empty Weight",
       "unit": "lbs",
       "quantity": 1438.11,
-      "arm": 87.55,
+      "arm": { 
+        "value": 87.55,
+        "configurable": true
+        },
       "moment": 1259000,
       "max": 2325
     },
