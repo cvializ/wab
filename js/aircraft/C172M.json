@@ -23,7 +23,8 @@
     {
       "name": "empty",
       "title": "Licensed Empty Weight",
-      "weight": 1366,
+      "unit": "lbs",
+      "quantity": 1366,
       "arm": 39.38,
       "moment": 1259000,
       "max": 2300
@@ -31,7 +32,8 @@
     {
       "name": "oil",
       "title": "Oil",
-      "volume": 8,
+      "unit": "qts",
+      "quantity": 8,
       "arm": -14,
       "moment": null,
       "max": 8
@@ -39,7 +41,8 @@
     {
       "name": "fuel",
       "title": "Fuel (Max 38 Standard)",
-      "volume": 38,
+      "unit": "gal",
+      "quantity": 38,
       "arm": 48,
       "moment": null,
       "max": 48
@@ -47,7 +50,8 @@
     {
       "name": "front",
       "title": "Front Passengers",
-      "weight": 340,
+      "unit": "lbs",
+      "quantity": 340,
       "arm": 37,
       "moment": null,
       "max": 400
@@ -55,7 +59,8 @@
     {
       "name": "aft",
       "title": "Rear Passengers",
-      "weight": 340,
+      "unit": "lbs",
+      "quantity": 340,
       "arm": 73,
       "moment": null,
       "max": 400
@@ -63,7 +68,8 @@
     {
       "name": "baggage",
       "title": "Baggage Area",
-      "weight": 0,
+      "unit": "lbs",
+      "quantity": 0,
       "arm": 95,
       "moment": null,
       "max": 120

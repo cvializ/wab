@@ -3,37 +3,77 @@
   <head>
     <title>Aircraft Weight and Balance</title>
     <link href="css/vendor/nv.d3.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css">
     <script data-main="js/main" src="js/vendor/require/require.js"></script>
-    <style>
+    <script id="rowTemplate" type="text/html">
+        <div class="col-xs-5 wabtitle"><div class="wabcell">{{title}}</div></div>
+        <div class="col-xs-5 wabquantity">
+          <div class="input-group">
+            <input type="text" class="form-control input-md" />
+            <span class="input-group-addon">{{unit}}</span>
+          </div>
+        </div>
+        <div class="col-xs-2 wabarm">{{ arm }}</div>
+    </script>
+    <style type="text/css">
+      [class^="col-"] {
+          padding-top: 10px;
+          padding-bottom: 10px;
+          /*background-color: rgba(86, 61, 124, 0.15);*/
+          border-top: 1px solid rgba(86, 61, 124, 0.2);
+      }
+
+      .wabheader div {
+        border: none;
+      }
+
       #content {
       }
+      
       #form {
-        width: 25%;
+        width: 40%;
         float: left;
       }
       #chart {
         float: right;
         margin: 5px;
-        width: 73%;
+        width: 58%;
         height: 400px;
       }
+
+      @media (max-width: 768px) {
+        #form { 
+          float: none;
+          width: 100%; 
+        }
+        #chart { 
+          float: none; 
+          width: 100%;
+          margin: 5px;
+          margin-left: 15px;
+        }
+      }
+
     </style>
   </head>
   <body>
     <header>
       <h2>Weight and Balance</h2>
       <h3 id="aircraft"></h3>
-      <select id="aircraftPicker">
-
+      <select id="aircraftPicker" class="form-control">
       </select>
     </header>
     <div id="content">
-      <div id="form">
-        <form id="wabform" action="" method="get">
-        </form>
-      </div>
       <div id="chart">
         <svg></svg>
+      </div>
+      <div id="form" class="container">
+        <div class="row wabheader">
+          <div class="col-xs-5">Section</div>
+          <div class="col-xs-5">Quantity</div>
+          <div class="col-xs-2">Arm</div>
+        </div>
       </div>
     </div>
   </body>

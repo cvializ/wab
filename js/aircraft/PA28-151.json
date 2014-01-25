@@ -13,6 +13,7 @@
     "utility": [
       {"x": 83, "y": 1200},
       {"x": 83, "y": 1950},
+      {"x": 83, "y": 1950},
       {"x": 86.5, "y": 1950},
       {"x": 86.5, "y": 1200}
     ],
@@ -22,7 +23,8 @@
     {
       "name": "empty",
       "title": "Licensed Empty Weight",
-      "weight": 1438.11,
+      "unit": "lbs",
+      "quantity": 1438.11,
       "arm": 87.55,
       "moment": 1259000,
       "max": 2325
@@ -30,7 +32,8 @@
     {
       "name": "oil",
       "title": "Oil",
-      "volume": 7,
+      "unit": "qts",
+      "quantity": 7,
       "arm": 27.5,
       "moment": null,
       "max": 8
@@ -38,7 +41,8 @@
     {
       "name": "fuel",
       "title": "Fuel",
-      "volume": 30,
+      "unit": "gal",
+      "quantity": 30,
       "arm": 95,
       "moment": null,
       "max": 48
@@ -46,7 +50,8 @@
     {
       "name": "front",
       "title": "Front Passengers",
-      "weight": 260,
+      "unit": "lbs",
+      "quantity": 260,
       "arm": 80.5,
       "moment": null,
       "max": null
@@ -54,7 +59,8 @@
     {
       "name": "aft",
       "title": "Aft Passengers",
-      "weight": 300,
+      "unit": "lbs",
+      "quantity": 300,
       "arm": 118.1,
       "moment": null,
       "max": null
@@ -62,7 +68,8 @@
     {
       "name": "baggage",
       "title": "Baggage Compartment",
-      "weight": 0,
+      "unit": "lbs",
+      "quantity": 0,
       "arm": 142.8,
       "moment": null,
       "max": null

@@ -35,12 +35,12 @@ define([], function () {
       section = this.sections[i];
 
       if (section.name === 'fuel' || section.name === 'oil') {
-        iWeight = section.volume * this.constants.weight[section.name];
+        iWeight = section.quantity * this.constants.weight[section.name];
       } else {
-        iWeight = section.weight;
+        iWeight = section.quantity;
       }
 
-      if (section.weight === 0) continue;
+      if (section.quantity === 0) continue;
 
       weight_so_far += iWeight;
       moment_so_far += iWeight * section.arm;

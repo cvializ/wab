@@ -1,21 +1,35 @@
 require.config({
   paths: {
     d3: 'vendor/nvd3/lib/d3.v2',
+    d3ich: 'd3.selection.ich.template',
+    ich: 'vendor/ich/ICanHaz.min',
     nv : 'vendor/nvd3/nv.d3',
     text: 'vendor/require/text',
-    json: 'vendor/require/json'
+    json: 'vendor/require/json',
+    bootstrap: '//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min',
+    jquery: '//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min'
   },
   shim: {
-    d3: { exports: 'd3' },
+    bootstrap: {
+      deps: ['jquery'],
+      exports: '$.fn.popover'
+    },
+    d3: {
+      exports: 'd3'
+    },
+    ich: {
+      exports: 'ich'
+    },
     nv: {
       exports: 'nv',
       deps: ['d3']
     }
-  }
+  },
+  enforceDefine: true
 });
 
-require(['d3', 'nv', 'aircraft/Aircraft', 'json!aircraft/list.json'],
-function (d3, nv, Aircraft, list) {
+define(['bootstrap', 'd3', 'nv', 'aircraft/Aircraft', 'json!aircraft/list.json', 'd3ich'],
+function (bootstrap, d3, nv, Aircraft, list) {
   function pluginify(d) {
     return 'json!aircraft/' + d + '.json';
   }
@@ -39,16 +53,7 @@ function (d3, nv, Aircraft, list) {
 
       picker.on('change', function () {
         update(aircraftList[this.value]);
-      });
-
-      var inputTable = d3.select('#wabform').append('table');
-      inputTable.append('thead')
-        .append('tr').selectAll('th')
-          .data(['Section', 'Weight or Volume', 'Arm'])
-          .enter()
-          .append('th')
-            .text(function (d) { return d; });
-      inputTable.append('tbody');
+      });        
     }
 
     function update(aircraft) {
@@ -58,31 +63,28 @@ function (d3, nv, Aircraft, list) {
       d3.select('title').text(aircraft.name + ': Weight and Balance');
       d3.select('#aircraft').text(aircraft.name + ' ' + aircraft.code);
 
-      var inputTable = d3.select('#wabform tbody');
+      var inputTable = d3.select('#form');
 
       // Select the table and apply the data.
-      var rowData = inputTable.selectAll('.sectionRow').data(aircraft.sections);
+      var rowData = inputTable.selectAll('.wabSection').data(aircraft.sections);
 
       // Create the new elements for the enter selection
       var newRow = rowData.enter()
-        .append('tr')
-        .classed('sectionRow', true);
-      newRow.append('td').classed('title', true);
-      newRow.append('td').classed('weightvolume', true)
-        .append('input')
-        .attr('type', 'text');
-      newRow.append('td').classed('arm', true);
+        .append('div') // TODO: Figure out how to not have to add this.
+        .attr('class', 'row wabSection')
+        .ich('rowTemplate');
 
       // Update the values for new and existing elements
-      rowData.select('td.title')
+      rowData.select('.wabtitle')
         .text(function (section) { return section.title; });
-      rowData.select('td.weightvolume')
+      // TODO: Prepend bootstrap addon
+      rowData.select('.wabquantity')
         .select('input') // TODO: I think this will work
           .attr('name', function (section) {
             return section.name;
           })
           .property('value', function (section) {
-            return section.weight || section.volume;
+            return section.quantity;
           })
           .on('change', function (section) {
             // i hope this is a reference to the actual object
@@ -90,15 +92,11 @@ function (d3, nv, Aircraft, list) {
               return d.name == section.name;
             }).pop();
 
-            if (newSection.weight !== undefined) {
-              newSection.weight = +this.value;
-            } else {
-              newSection.volume = +this.value;
-            }
+            newSection.quantity = +this.value;
 
             redrawChart(aircraft);
           });
-      rowData.select('td.arm')
+      rowData.select('.wabarm')
         .text(function (section) {
           return section.arm;
         });
@@ -117,12 +115,9 @@ function (d3, nv, Aircraft, list) {
           x = (+x).toFixed(2);
           y = (+y).toFixed(2);
           if (e.point.label !== undefined) {
-            return '<h2>' + e.point.label + '</h2>' +
+            return '<h3>' + e.point.label + '</h3>' +
                     'Weight ' + y + 'lbs at Arm ' + x + 'in';
 
-          } else {
-            return '<h3>' + key + '</h3>' +
-                   '<p>' + y + ' at ' + x + '</p>';
           }
         });
 
@@ -134,7 +129,7 @@ function (d3, nv, Aircraft, list) {
         });
 
         chart.xAxis
-            .axisLabel('Arm (in)')
+            .axisLabel('Center of Gravity Arm (in)')
             .tickValues(d3.range(xExtent[0], xExtent[1]))
             .tickFormat(d3.format(',r'));
 
@@ -159,21 +154,23 @@ function (d3, nv, Aircraft, list) {
     update(N44749);
 
     function data(aircraft) {
+      var wab = aircraft.WeightAndBalance(),
+          color = wab[wab.length-1].y > aircraft.MaxGrossWeight() ? 'red' : 'black';
       return [
         {
           values: aircraft.categories.normal,
           key: 'Normal Category',
-          color: '#ff7f0e'
+          color: 'darkblue'
         },
         {
           values: aircraft.categories.utility,
           key: 'Utility Category',
-          color: '#2ca02c'
+          color: 'lightblue'
         },
         {
-          values: aircraft.WeightAndBalance(),
+          values: wab,
           key: 'Weight and Balance',
-          color: 'red'
+          color: color
         }
       ];
     }
