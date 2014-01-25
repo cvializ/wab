@@ -29,16 +29,24 @@ require.config({
   enforceDefine: true
 });
 
-define(['bootstrap', 'd3', 'nv', 'aircraft/Aircraft', 'json!aircraft/list.json', 'd3ich', 'domReady!'],
-function (bootstrap, d3, nv, Aircraft, list) {
+define(['bootstrap', 'd3', 'nv', 'aircraft/Aircraft', 'ich', 'text!../template/sectionRow.ich', 'json!aircraft/list.json', 'd3ich', 'domReady!'],
+function (bootstrap, d3, nv, Aircraft, ich, template, list) {
+  // Calculate the RequireJS string for each aircraft.
   function pluginify(d) {
     return 'json!aircraft/' + d + '.json';
   }
   list = list.map(pluginify);
 
-  //=========================================================
+  // Add the template data to the templating engine
+  ich.addTemplate('sectionRow', template);
+
+  // Require the aircraft JSON
   require(list, function () {
     var aircraftList = Array.prototype.slice.call(arguments);
+
+    var N44749 = new Aircraft(aircraftList[0]);
+    init();
+    update(N44749);
 
     function init() {
       var picker = d3.select('#aircraftPicker');
@@ -66,29 +74,34 @@ function (bootstrap, d3, nv, Aircraft, list) {
 
       var inputTable = d3.select('#form');
 
-      // Select the table and apply the data.
+      // DATA: Select the table and apply the data.
       var rowData = inputTable.selectAll('.wabSection').data(aircraft.sections);
 
+      // ENTER:
       // Create the new elements for the enter selection
       var newRow = rowData.enter()
         .append('div') // TODO: Figure out how to not have to add this.
         .attr('class', 'row wabSection')
-        .ich('rowTemplate');
+        .ich('sectionRow');
 
-      // Update the values for new and existing elements
+      // UPDATE:
+      // Update the title of the section
       rowData.select('.wabtitle')
         .text(function (section) { return section.title; });
-      // TODO: Prepend bootstrap addon
+
+      // Update the input attributes and callback
       rowData.select('.wabquantity').select('.input-group')
-          .select('input') // TODO: I think this will work
+          .select('input')
             .attr('name', function (section) {
               return section.name;
+            })
+            .attr('placeholder', function (section) {
+              return 'Max ' + section.max;
             })
             .property('value', function (section) {
               return section.quantity === null ? "" : section.quantity;
             })
             .on('change', function (section) {
-              // i hope this is a reference to the actual object
               var newSection = aircraft.sections.filter(function (d) {
                 return d.name == section.name;
               }).pop();
@@ -106,12 +119,13 @@ function (bootstrap, d3, nv, Aircraft, list) {
               redrawChart(aircraft);
             });
 
+      // Update the arm text.
       rowData.select('.wabarm')
         .text(function (section) {
           return section.arm;
         });
 
-      // Remove the old elements
+      // EXIT: remoe the old elements
       rowData.exit().remove();
 
       redrawChart(aircraft);
@@ -145,7 +159,6 @@ function (bootstrap, d3, nv, Aircraft, list) {
 
         chart.yAxis
             .axisLabel('Weight (lbs)')
-            //.tickValues(d3.range(yExtent[0], yExtent[1], 200))
             .tickFormat(d3.format('.02f'));
 
         d3.select('#chart svg')
@@ -158,10 +171,6 @@ function (bootstrap, d3, nv, Aircraft, list) {
         return chart;
       });
     }
-
-    var N44749 = new Aircraft(aircraftList[0]);
-    init();
-    update(N44749);
 
     function data(aircraft) {
       var wab = aircraft.WeightAndBalance(),

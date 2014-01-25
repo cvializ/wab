@@ -5,16 +5,7 @@
     <link href="css/vendor/nv.d3.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css">
-    <script id="rowTemplate" type="text/html">
-        <div class="col-xs-5 wabtitle"><div class="wabcell">{{title}}</div></div>
-        <div class="col-xs-5 wabquantity">
-          <div class="input-group">
-            <input type="text" placeholder="Max {{ max }}" class="form-control input-md" />
-            <span class="input-group-addon">{{unit}}</span>
-          </div>
-        </div>
-        <div class="col-xs-2 wabarm">{{ arm }}</div>
-    </script>
+    <script data-main="js/main" src="js/vendor/require/require.js"></script>
     <style type="text/css">
       [class^="col-"] {
           padding-top: 10px;
@@ -27,9 +18,14 @@
         border: none;
       }
 
-      #content {
+      .bs-header {
+        margin: 5px;
       }
       
+      #aircraftPicker {
+        width: 200px;
+      }
+
       #form {
         width: 40%;
         float: left;
@@ -69,6 +65,7 @@
       <div id="chart">
         <svg></svg>
       </div>
+      <img id="drawn" />
       <div id="form" class="container">
         <div class="row wabheader">
           <div class="col-xs-5">Section</div>
@@ -77,6 +74,5 @@
         </div>
       </div>
     </div>
-    <script data-main="js/main" src="js/vendor/require/require.js"></script>
   </body>
 </html>
