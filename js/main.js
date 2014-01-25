@@ -91,6 +91,7 @@ function (bootstrap, d3, nv, Aircraft, ich, template, list) {
 
       // Update the input attributes and callback
       rowData.select('.wabquantity').select('.input-group')
+          .classed('has-error', false)
           .select('input')
             .attr('name', function (section) {
               return section.name;
