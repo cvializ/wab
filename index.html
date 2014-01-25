@@ -3,6 +3,7 @@
   <head>
     <title>Aircraft Weight and Balance</title>
     <link href="css/vendor/nv.d3.css" rel="stylesheet" type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=Quantico:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css">
     <script data-main="js/main" src="js/vendor/require/require.js"></script>
@@ -10,7 +11,6 @@
       [class^="col-"] {
           padding-top: 10px;
           padding-bottom: 10px;
-          /*background-color: rgba(86, 61, 124, 0.15);*/
           border-top: 1px solid rgba(86, 61, 124, 0.2);
       }
 
@@ -18,12 +18,29 @@
         border: none;
       }
 
-      .bs-header {
-        margin: 5px;
+      .bs-header h1 {
+        padding-top: 30px;
+        padding-bottom: 20px;
+        margin: 0;
+        width: 100%;
+      }
+
+      .bs-header h2 {
+        padding: 5px;
+        background-color: black;
+        color: white;
+        font-family: 'Quantico', sans-serif;
       }
       
+      .bs-header h2, .bs-header h1 {
+        padding-left: 20px;
+        margin-top: 0;
+      }
+
       #aircraftPicker {
-        width: 200px;
+        margin-left: 10px;
+        margin-right: 10px;
+        width: 40%;
       }
 
       #form {
@@ -38,6 +55,9 @@
       }
 
       @media (max-width: 768px) {
+        #aircraftPicker {
+          width: 100%;
+        }
         #form { 
           float: none;
           width: 100%; 
@@ -55,8 +75,8 @@
   <body>
     <header>
       <div class="bs-header">
-        <h2>Weight and Balance</h2>
-        <h3 id="aircraft"></h3>
+        <h1>Weight and Balance</h1>
+        <h2 id="aircraft"></h2>
         <select id="aircraftPicker" class="form-control">
         </select>
       </div>

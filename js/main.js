@@ -141,12 +141,9 @@ function (bootstrap, d3, nv, Aircraft, ich, template, list) {
         chart.tooltipContent(function(key, x, y, e, graph) {
           x = (+x).toFixed(2);
           y = (+y).toFixed(2);
-          if (e.point.label !== undefined) {
-            return '<h3>' + e.point.label + '</h3>' +
-                    'Weight ' + y + 'lbs at Arm ' + x + 'in';
-
-          }
-        });
+          return '<h3>' + (e.point.label || key) + '</h3>' +
+                  'Weight ' + y + 'lbs at Arm ' + x + 'in';
+          });
 
         var xExtent = d3.extent(aircraft.categories.normal, function (d) {
           return d.x;
@@ -177,7 +174,7 @@ function (bootstrap, d3, nv, Aircraft, ich, template, list) {
 
     function data(aircraft) {
       var wab = aircraft.WeightAndBalance(),
-          color = wab[wab.length-1].y > aircraft.MaxGrossWeight() ? 'red' : 'black';
+          color = wab[wab.length-1].y > aircraft.MaxGrossWeight() ? 'red' : 'green';
       return [
         {
           values: aircraft.categories.normal,
