@@ -79,24 +79,33 @@ function (bootstrap, d3, nv, Aircraft, list) {
       rowData.select('.wabtitle')
         .text(function (section) { return section.title; });
       // TODO: Prepend bootstrap addon
-      rowData.select('.wabquantity')
-        .select('input') // TODO: I think this will work
-          .attr('name', function (section) {
-            return section.name;
-          })
-          .property('value', function (section) {
-            return section.quantity;
-          })
-          .on('change', function (section) {
-            // i hope this is a reference to the actual object
-            var newSection = aircraft.sections.filter(function (d) {
-              return d.name == section.name;
-            }).pop();
+      rowData.select('.wabquantity').select('.input-group')
+          .select('input') // TODO: I think this will work
+            .attr('name', function (section) {
+              return section.name;
+            })
+            .property('value', function (section) {
+              return section.quantity;
+            })
+            .on('change', function (section) {
+              // i hope this is a reference to the actual object
+              var newSection = aircraft.sections.filter(function (d) {
+                return d.name == section.name;
+              }).pop();
+              newSection.quantity = +this.value;
 
-            newSection.quantity = +this.value;
+              d3.selectAll('.wabquantity .input-group')
+                .classed('has-error', function (d) {
+                  if (d.quantity > d.max) {
+                    return true;
+                  } else {
+                    return false;
+                  }
+                });
 
-            redrawChart(aircraft);
-          });
+              redrawChart(aircraft);
+            });
+
       rowData.select('.wabarm')
         .text(function (section) {
           return section.arm;
