@@ -1,5 +1,6 @@
 require.config({
   paths: {
+    domReady: 'vendor/require/domReady',
     d3: 'vendor/nvd3/lib/d3.v2',
     d3ich: 'd3.selection.ich.template',
     ich: 'vendor/ich/ICanHaz.min',
@@ -28,7 +29,7 @@ require.config({
   enforceDefine: true
 });
 
-define(['bootstrap', 'd3', 'nv', 'aircraft/Aircraft', 'json!aircraft/list.json', 'd3ich'],
+define(['bootstrap', 'd3', 'nv', 'aircraft/Aircraft', 'json!aircraft/list.json', 'd3ich', 'domReady!'],
 function (bootstrap, d3, nv, Aircraft, list) {
   function pluginify(d) {
     return 'json!aircraft/' + d + '.json';
@@ -53,7 +54,7 @@ function (bootstrap, d3, nv, Aircraft, list) {
 
       picker.on('change', function () {
         update(aircraftList[this.value]);
-      });        
+      });
     }
 
     function update(aircraft) {
