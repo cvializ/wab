@@ -23,6 +23,9 @@ module.exports = function(grunt) {
         }
       }
     },
+    nodeunit: {
+      all: ['test/**/*_test.js']
+    },
     watch: {
       express: {
         files: ['**/*.js','!**/node_modules/**', '!**/bower_components/**'],
@@ -36,8 +39,9 @@ module.exports = function(grunt) {
   grunt.option('stack', true);
 
   grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-nodeunit');
   grunt.loadNpmTasks('grunt-express-server');
+  grunt.loadNpmTasks('grunt-contrib-watch');
 
   grunt.registerTask('default', ['jshint']);
   grunt.registerTask('server', ['express:dev', 'watch']);

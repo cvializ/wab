@@ -10,6 +10,8 @@
     "grunt": "~0.4.2",
     "grunt-express-server": "~0.4.11",
     "grunt-contrib-watch": "~0.5.3",
-    "grunt-contrib-jshint": "~0.8.0"
+    "grunt-contrib-jshint": "~0.8.0",
+    "grunt-contrib-nodeunit": "~0.3.0",
+    "requirejs": "~2.1.10"
   }
 }
