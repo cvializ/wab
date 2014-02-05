@@ -1,5 +1,7 @@
-var requirejs = require('requirejs');
-var path = require('path');
+var requirejs = require('requirejs'),
+    path = require('path'),
+    testCase = require('nodeunit').testCase;
+
 requirejs.config({
 	baseUrl: path.join(__dirname, '../'),
 	paths: {
@@ -12,28 +14,45 @@ requirejs.config({
     nodeRequire: require
 });
 
-var C172 = requirejs('json!js/aircraft/C172M.json');
-var Aircraft = requirejs('js/aircraft/Aircraft');
+var C172 = requirejs('json!js/aircraft/C172M.json'),
+    Aircraft = requirejs('js/aircraft/Aircraft');
 
-var myC172 = new Aircraft(C172);
+function getSection(aircraft, section) {
+    return aircraft.sections.filter(function (d) { return d.name === section; });
+}
 
-exports.testOverMaxGrossWeight = function(test){
-    test.expect(1);
-    test.ok(true, "this assertion should pass");
-    test.done();
-};
+exports.group = testCase({
 
-exports.testUnderMinimumGrossWeight = function(test){
-    test.ok(false, "this assertion should fail");
-    test.done();
-};
+    setUp: function (cb) {
+        this.data = requirejs('json!js/aircraft/C172M.json')
+        this.aircraft = new Aircraft(this.data);
+        cb();
+    },
 
-exports.testCGTooFarAft = function(test){
-    test.ok(false, "this assertion should fail");
-    test.done();
-};
+    testOverMaxGrossWeight: function(test){
+        var defaultFuel = getSection(this.data, 'fuel').quantity;
+        test.expect(getSection(this.aircraft, 'fuel').quantity, defaultFuel, "The aircraft should have the default amount of fuel.");
 
-exports.testCGTooFarForeward = function(test){
-    test.ok(false, "this assertion should fail");
-    test.done();
-};
+        getSection(this.aircraft, 'fuel').quantity = 20;
+        test.expect(getSection(this.aircraft, 'fuel').quantity, 20, "There should be 20 gallons of fuel.");
+
+        test.expect(getSection(this.data, 'fuel').quantity, 20, "The data's amount of fuel should not change.");
+        test.ok(true, "Pass");
+        test.done();
+    },
+
+    testUnderMinimumGrossWeight: function(test){
+        test.ok(false, "this assertion should fail");
+        test.done();
+    },
+
+    testCGTooFarAft: function(test){
+        test.ok(false, "this assertion should fail");
+        test.done();
+    },
+
+    testCGTooFarForeward: function(test){
+        test.ok(false, "this assertion should fail");
+        test.done();
+    }
+});

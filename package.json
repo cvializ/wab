@@ -12,6 +12,7 @@
     "grunt-contrib-watch": "~0.5.3",
     "grunt-contrib-jshint": "~0.8.0",
     "grunt-contrib-nodeunit": "~0.3.0",
-    "requirejs": "~2.1.10"
+    "requirejs": "~2.1.10",
+    "nodeunit": "~0.8.4"
   }
 }
