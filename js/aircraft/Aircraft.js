@@ -44,16 +44,27 @@ define([], function () {
         iArm,
         weight_so_far = 0,
         moment_so_far = 0;
+
+    function sum(previous, current) {
+      return prev + current;
+    }
+
     for (var i in this.sections) {
       section = this.sections[i];
 
       if (section.name === 'fuel' || section.name === 'oil') {
         iWeight = section.quantity * this.constants.weight[section.name];
       } else {
-        iWeight = section.quantity;
+        if (typeof section.quantity === 'number') {
+          iWeight = section.quantity;
+        } else if (section.quantity instanceof Array) {
+          iWeight = section.quantity.reduce(sum);
+        } else {
+          iWeight = 0;
+        }
       }
 
-      if (section.quantity === 0) continue;
+      if (iWeight === 0) continue;
 
       if (typeof section.arm === 'number') {
         iArm = section.arm;

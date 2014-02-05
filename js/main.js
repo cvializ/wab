@@ -29,8 +29,16 @@ require.config({
   enforceDefine: true
 });
 
-define(['bootstrap', 'd3', 'nv', 'aircraft/Aircraft', 'ich', 'text!../template/sectionRow.ich', 'json!aircraft/list.json', 'd3ich', 'domReady!'],
-function (bootstrap, d3, nv, Aircraft, ich, template, list) {
+define([
+  // Load libraries
+  'bootstrap', 'd3', 'nv', 'ich',
+  // Load my modules
+  'aircraft/Aircraft',
+  // Load data
+  'text!../template/sectionRow.ich', 'json!aircraft/list.json',
+  // Load library extensions, get the dom ready.
+  'd3ich', 'domReady!'],
+function (bootstrap, d3, nv, ich, Aircraft, template, list) {
   // Calculate the RequireJS string for each aircraft.
   function pluginify(d) {
     return 'json!aircraft/' + d + '.json';
@@ -79,7 +87,11 @@ function (bootstrap, d3, nv, Aircraft, ich, template, list) {
       var newRow = rowData.enter()
         .append('div') // TODO: Figure out how to not have to add this.
         .attr('class', 'row wabSection')
-        .ich('sectionRow');
+        .ich('sectionRow', {
+          render_input: function (section) {
+
+          }
+        });
 
       // UPDATE:
       // Update the title of the section

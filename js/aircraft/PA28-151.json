@@ -29,7 +29,6 @@
         "value": 87.55,
         "configurable": true
         },
-      "moment": 1259000,
       "max": 2325
     },
     {
@@ -38,7 +37,6 @@
       "unit": "qts",
       "quantity": 7,
       "arm": 27.5,
-      "moment": null,
       "max": 8
     },
     {
@@ -47,7 +45,6 @@
       "unit": "gal",
       "quantity": 30,
       "arm": 95,
-      "moment": null,
       "max": 50
     },
     {
@@ -56,7 +53,6 @@
       "unit": "lbs",
       "quantity": 260,
       "arm": 80.5,
-      "moment": null,
       "max": 420
     },
     {
@@ -65,7 +61,6 @@
       "unit": "lbs",
       "quantity": 300,
       "arm": 118.1,
-      "moment": null,
       "max": 340
     },
     {
@@ -74,7 +69,6 @@
       "unit": "lbs",
       "quantity": null,
       "arm": 142.8,
-      "moment": null,
       "max": 200
     }
   ]

@@ -29,7 +29,6 @@
         "value": 39.38,
         "configurable": true
       },
-      "moment": 1259000,
       "max": 2300
     },
     {
@@ -38,7 +37,6 @@
       "unit": "qts",
       "quantity": 8,
       "arm": -14,
-      "moment": null,
       "max": 8
     },
     {
@@ -47,25 +45,28 @@
       "unit": "gal",
       "quantity": 38,
       "arm": 48,
-      "moment": null,
       "max": 48
     },
     {
       "name": "front",
       "title": "Front Passengers",
       "unit": "lbs",
-      "quantity": 340,
+      "quantity": [
+        135,
+        170
+      ],
       "arm": 37,
-      "moment": null,
       "max": 400
     },
     {
       "name": "aft",
       "title": "Rear Passengers",
       "unit": "lbs",
-      "quantity": null,
+      "quantity": [
+        null,
+        null
+      ],
       "arm": 73,
-      "moment": null,
       "max": 400
     },
     {
@@ -74,7 +75,6 @@
       "unit": "lbs",
       "quantity": null,
       "arm": 95,
-      "moment": null,
       "max": 120
     }
   ]
