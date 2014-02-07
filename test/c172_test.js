@@ -26,7 +26,6 @@ exports.group = testCase({
   },
 
   testDataIntegrity: function (test) {
-    test.expect(3);
     var defaultFuel = this.aircraft.getSection.call(this.data, 'fuel').quantity;
     test.strictEqual(this.aircraft.getSection('fuel').quantity, defaultFuel, "The aircraft should have the default amount of fuel.");
 
@@ -69,7 +68,7 @@ exports.group = testCase({
     var wab = this.aircraft.WeightAndBalance();
 
     test.strictEqual(wab.success, false, "The over-loaded weight and balance should fail.");
-    test.ok(wab.loading.weight > this.aircraft.MaxGrossWeight(), "The over-loaded weight should be over the aircraft's Maximum GW.");
+    test.ok(wab.loading.weight > this.aircraft.MaxGrossWeight, "The over-loaded weight should be over the aircraft's Maximum GW.");
     test.done();
   },
 
@@ -84,7 +83,7 @@ exports.group = testCase({
     var wab = this.aircraft.WeightAndBalance();
 
     test.strictEqual(wab.success, false, "The under-loaded weight and balance should fail.");
-    test.ok(wab.loading.weight < this.aircraft.MinGrossWeight(), "The under-loaded weight should be under the aircraft's Minimum GW.");
+    test.ok(wab.loading.weight < this.aircraft.MinGrossWeight, "The under-loaded weight should be under the aircraft's Minimum GW.");
     
     test.done();
   },
@@ -98,13 +97,13 @@ exports.group = testCase({
     var wab = this.aircraft.WeightAndBalance();
 
     test.strictEqual(wab.success, false, "The excessively aft CG should fail.");
-    test.ok(wab.loading.cg > this.aircraft.AftCGLimit(), "The excessively aft CG should be aft of the Aft CG limit.");
+    test.ok(wab.loading.cg > this.aircraft.AftCGLimit, "The excessively aft CG should be aft of the Aft CG limit.");
     
     test.done();
   },
 
   testCGTooFarForward: function (test) {
-    this.aircraft.getSection('empty').arm = this.aircraft.ForwardCGLimit()
+    this.aircraft.getSection('empty').arm = this.aircraft.ForwardCGLimit
     this.aircraft.Load({
       oil: 'max',
       fuel: 0,
@@ -115,7 +114,7 @@ exports.group = testCase({
     var wab = this.aircraft.WeightAndBalance();
     
     test.strictEqual(wab.success, false, "The excessively forward CG should fail.");
-    test.ok(wab.loading.cg < this.aircraft.ForwardCGLimit(), "The excessively forward CG should be forward of the forward CG limit.");
+    test.ok(wab.loading.cg < this.aircraft.ForwardCGLimit, "The excessively forward CG should be forward of the forward CG limit.");
     
     test.done();
   }

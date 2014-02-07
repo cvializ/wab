@@ -29,6 +29,11 @@ define([], function () {
         fuel: 6 // lbs/gal
       }
     };
+
+    this.MaxGrossWeight = MaxGrossWeight(props.categories);
+    this.MinGrossWeight = MinGrossWeight(props.categories);
+    this.AftCGLimit = AftCGLimit(props.categories);
+    this.ForwardCGLimit = ForwardCGLimit(props.categories);
   };
 
   function getLimit(comparator, values, map) {
@@ -51,26 +56,26 @@ define([], function () {
         if (loads[section] === 'max') {
           loads[section] = this.getSection(section).max;
         }
-        
+
         this.getSection(section).quantity = loads[section];
       }
     }
   }
 
-  Aircraft.prototype.MaxGrossWeight = function () {
-    return getLimit(Math.max, this.categories.normal, function (d) { return d.y; });
+  function MaxGrossWeight(categories) {
+    return getLimit(Math.max, categories.normal, function (d) { return d.y; });
   };
 
-  Aircraft.prototype.MinGrossWeight = function () {
-    return getLimit(Math.min, this.categories.normal, function (d) { return d.y; });
+  function MinGrossWeight(categories) {
+    return getLimit(Math.min, categories.normal, function (d) { return d.y; });
   };
 
-  Aircraft.prototype.AftCGLimit = function () {
-    return getLimit(Math.max, this.categories.normal, function (d) { return d.x; });
+  function AftCGLimit(categories) {
+    return getLimit(Math.max, categories.normal, function (d) { return d.x; });
   };
 
-  Aircraft.prototype.ForwardCGLimit = function () {
-    return getLimit(Math.min, this.categories.normal, function (d) { return d.x; });
+  function ForwardCGLimit(categories) {
+    return getLimit(Math.min, categories.normal, function (d) { return d.x; });
   };
 
   Aircraft.prototype.WeightAndBalance = function () {
@@ -112,10 +117,10 @@ define([], function () {
     var loading = points[points.length-1];
         loading = { weight: loading.y, cg: loading.x };
 
-    var success = loading.weight <= this.MaxGrossWeight() &&
-                  loading.weight >= this.MinGrossWeight() &&
-                  loading.cg >= this.ForwardCGLimit() &&
-                  loading.cg <= this.AftCGLimit();
+    var success = loading.weight <= this.MaxGrossWeight &&
+                  loading.weight >= this.MinGrossWeight &&
+                  loading.cg >= this.ForwardCGLimit &&
+                  loading.cg <= this.AftCGLimit;
 
     return {
       success: success,
