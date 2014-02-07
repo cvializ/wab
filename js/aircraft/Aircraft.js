@@ -1,5 +1,22 @@
 define([], function () {
+  // Use this method so we don't overwrite any
+  // json data we loaded.
+  function cloneProps(props) {
+    var newObj = (props instanceof Array) ? [] : {},
+        i;
+    for (i in props) {
+      if (props[i] && typeof props[i] === 'object') {
+        newObj[i] = cloneProps(props[i]);
+      } else {
+        newObj[i] = props[i];
+      }
+    }
+    return newObj;
+  }
+
   var Aircraft = function (props) {
+    props = cloneProps(props);
+
     for (var prop in props) {
       if (props.hasOwnProperty(prop)) {
         this[prop] = props[prop];
@@ -8,7 +25,7 @@ define([], function () {
 
     this.constants = {
       weight: {
-        oil: 1.75, // lbs/quart
+        oil: 1.875, // lbs/quart
         fuel: 6 // lbs/gal
       }
     };
@@ -20,6 +37,12 @@ define([], function () {
     }
     return comparator.apply(null, values);
   }
+
+  Aircraft.prototype.getSection = function (section) {
+    if (this.sections) {
+      return this.sections.filter(function (d) { return d.name === section; }).pop();
+    }
+  };
 
   Aircraft.prototype.MaxGrossWeight = function () {
     return getLimit(Math.max, this.categories.normal, function (d) { return d.y; });
@@ -74,15 +97,17 @@ define([], function () {
     }
 
     var loading = points[points.length-1];
+        loading = { weight: loading.y, cg: loading.x };
 
-    var success = loading.y < this.MaxGrossWeight() &&
-                  loading.y > this.MinGrossWeight() &&
-                  loading.x > this.ForwardCGLimit() &&
-                  loading.x < this.AftCGLimit();
+    var success = loading.weight <= this.MaxGrossWeight() &&
+                  loading.weight >= this.MinGrossWeight() &&
+                  loading.cg >= this.ForwardCGLimit() &&
+                  loading.cg <= this.AftCGLimit();
 
     return {
       success: success,
-      points: points
+      points: points,
+      loading: loading
     };
   };
 
