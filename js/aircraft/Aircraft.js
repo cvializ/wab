@@ -44,6 +44,19 @@ define([], function () {
     }
   };
 
+  Aircraft.prototype.Load = function (loads) {
+    loads = loads || {};
+    for (var section in loads) {
+      if (loads.hasOwnProperty(section)) {
+        if (loads[section] === 'max') {
+          loads[section] = this.getSection(section).max;
+        }
+        
+        this.getSection(section).quantity = loads[section];
+      }
+    }
+  }
+
   Aircraft.prototype.MaxGrossWeight = function () {
     return getLimit(Math.max, this.categories.normal, function (d) { return d.y; });
   };

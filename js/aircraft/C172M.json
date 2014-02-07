@@ -43,12 +43,12 @@
     },
     {
       "name": "fuel",
-      "title": "Fuel (Max 38 Standard)",
+      "title": "Fuel (Max 48 Extended Tanks)",
       "unit": "gal",
       "quantity": 38,
       "arm": 48,
       "moment": null,
-      "max": 48
+      "max": 38
     },
     {
       "name": "front",
