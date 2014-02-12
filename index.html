@@ -28,6 +28,20 @@
           <div class="col-xs-5">Quantity</div>
           <div class="col-xs-3">Arm (in)</div>
         </div>
+        <!-- ko: foreach: sections -->
+        <div class="row">
+          <div data-bind="text: title" class="col-xs-4 wabtitle"></div>
+          <div class="col-xs-5 wabquantity">
+            <div class="input-group">
+              <input data-bind="attr: { placeholder: 'Max ' + placeholder, name: name }"
+                     class="form-control input-md" type="text" placeholder="" name="">
+              <span data-bind="text: unit" class="input-group-addon"></span>
+            </div>
+          </div>
+          <div class="col-xs-3 wabarm">
+          </div>
+        </div>
+        <!-- /ko -->
       </div>
     </div>
   </body>
