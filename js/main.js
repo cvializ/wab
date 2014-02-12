@@ -8,6 +8,7 @@ require.config({
     text: 'vendor/require/text',
     json: 'vendor/require/json',
     bootstrap: '//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min',
+    knockout: '//cdnjs.cloudflare.com/ajax/libs/knockout/2.3.0/knockout-min.js',
     jquery: '//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min'
   },
   shim: {
@@ -29,8 +30,8 @@ require.config({
   enforceDefine: true
 });
 
-define(['bootstrap', 'd3', 'nv', 'aircraft/Aircraft', 'ich', 'text!../template/sectionRow.ich', 'json!aircraft/list.json', 'd3ich', 'domReady!'],
-function (bootstrap, d3, nv, Aircraft, ich, template, list) {
+define(['bootstrap', 'd3', 'nv', 'knockout', 'aircraft/Aircraft', 'ich', 'text!../template/sectionRow.ich', 'json!aircraft/list.json', 'd3ich', 'domReady!'],
+function (bootstrap, d3, nv, ko, Aircraft, ich, template, list) {
   // Calculate the RequireJS string for each aircraft.
   function pluginify(d) {
     return 'json!aircraft/' + d + '.json';
