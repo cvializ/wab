@@ -3,7 +3,7 @@ Weight&Balance
 
 A Javascript-based weight and balance calculator for general aviation aircraft.
 
-[View the live demo!](http://vializ.me/wab)
+[View the live demo!](http://wab.vializ.me/)
 
 ## What is Weight and Balance?
 
